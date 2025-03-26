@@ -36,9 +36,9 @@
 /obj/item/clothing/head/superior_welding/examine()
 	. = ..()
 	if(icon_state == "[initial(icon_state)]up")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. UPIt looks like it can block [hug_memory] more huggers."
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
 	if(icon_state == "[initial(icon_state)]")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. DOWNIt looks like it can block [anti_hug] more huggers."
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
 
 /obj/item/clothing/head/welding/attack_self(mob/user)
 	toggle_item_state(user)
@@ -124,9 +124,9 @@
 /obj/item/clothing/head/superior_welding/examine()
 	. = ..()
 	if(icon_state == "[initial(icon_state)]up")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. UPIt looks like it can block [hug_memory] more huggers."
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
 	if(icon_state == "[initial(icon_state)]")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. DOWNIt looks like it can block [anti_hug] more huggers."
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
 
 /obj/item/clothing/head/superior_welding/attack_self(mob/user)
 	toggle_item_state(user)
