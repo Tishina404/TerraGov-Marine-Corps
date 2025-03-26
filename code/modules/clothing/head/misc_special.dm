@@ -1,6 +1,7 @@
 /*
 * Contents:
 *		Welding mask
+*		Superior welding mask
 *		Cakehat
 *		Ushanka
 *		Pumpkin head
@@ -80,6 +81,91 @@
 	. = ..()
 	flip_up()
 	AddComponent(/datum/component/clothing_tint, TINT_5, FALSE)
+
+/*
+* Superior welding mask
+*/
+/obj/item/clothing/head/superior_welding
+	name = "\improper Superior welding helmet"
+	desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor."
+
+	icon = 'icons/obj/clothing/headwear/marine_hats.dmi' //move sprites to hats and remove this part
+	worn_icon_list = list(
+		slot_head_str = 'icons/mob/clothing/headwear/marine_helmets.dmi',
+		slot_l_hand_str = 'icons/mob/inhands/items/items_left.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/items/items_right.dmi',
+	) // till here
+
+	icon_state = "superior_welding"
+	worn_icon_state = "superior_welding"
+
+	var/up = FALSE
+	soft_armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50, FIRE = 50, ACID = 50)
+	max_integrity = 5
+
+	atom_flags = CONDUCT
+	inventory_flags = COVEREYES|COVERMOUTH|BLOCKSHARPOBJ
+	inv_hide_flags = HIDEEARS|HIDEEYES|HIDEFACE
+	armor_protection_flags = HEAD|FACE|EYES
+	actions_types = list(/datum/action/item_action/toggle)
+	siemens_coefficient = 0.9 //The what now
+	w_class = WEIGHT_CLASS_NORMAL
+	anti_hug = 2
+	eye_protection = 2
+	var/hug_memory = 0 //Variable to hold the "memory" of how many anti-hugs remain.  Because people were abusing the fuck out of it.
+
+/obj/item/clothing/head/superior_welding/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/clothing_tint, TINT_4)
+
+/obj/item/clothing/head/superior_welding/attack_self(mob/user)
+	toggle_item_state(user)
+
+/obj/item/clothing/head/superior_welding/verb/verbtoggle()
+	set category = "IC.Object"
+	set name = "Adjust superior welding mask"
+	set src in usr
+
+	if(!usr.incapacitated())
+		toggle_item_state(usr)
+
+/obj/item/clothing/head/superior_welding/proc/flip_up()
+	DISABLE_BITFIELD(inventory_flags, COVEREYES|COVERMOUTH|BLOCKSHARPOBJ)
+	DISABLE_BITFIELD(inv_hide_flags, HIDEEARS|HIDEEYES|HIDEFACE)
+	eye_protection = 0
+	hug_memory = anti_hug
+	anti_hug = 0
+	icon_state = "[initial(icon_state)]up"
+
+/obj/item/clothing/head/superior_welding/proc/flip_down()
+	ENABLE_BITFIELD(inventory_flags, COVEREYES|COVERMOUTH|BLOCKSHARPOBJ)
+	ENABLE_BITFIELD(inv_hide_flags, HIDEEARS|HIDEEYES|HIDEFACE)
+	eye_protection = initial(eye_protection)
+	anti_hug = hug_memory
+	icon_state = initial(icon_state)
+
+/obj/item/clothing/head/superior_welding/toggle_item_state(mob/user)
+	. = ..()
+	up = !up
+	icon_state = "[initial(icon_state)][up ? "up" : ""]"
+	if(up)
+		flip_up()
+	else
+		flip_down()
+	if(user)
+		to_chat(usr, "You [up ? "push [src] up out of your face" : "flip [src] down to protect your eyes"].") //maybe change when not worn to make more sense
+
+	update_clothing_icon()	//so our mob-overlays update
+
+	update_action_button_icons()
+
+/obj/item/clothing/head/superior_welding/flipped //spawn in flipped up.
+	up = TRUE
+
+/obj/item/clothing/head/superior_welding/flipped/Initialize(mapload)
+	. = ..()
+	flip_up()
+	AddComponent(/datum/component/clothing_tint, TINT_4, FALSE)
 
 /*
 * Cakehat
