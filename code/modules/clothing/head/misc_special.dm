@@ -33,13 +33,6 @@
 	. = ..()
 	AddComponent(/datum/component/clothing_tint, TINT_5)
 
-/obj/item/clothing/head/superior_welding/examine()
-	. = ..()
-	if(icon_state == "[initial(icon_state)]up")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
-	if(icon_state == "[initial(icon_state)]")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
-
 /obj/item/clothing/head/welding/attack_self(mob/user)
 	toggle_item_state(user)
 
@@ -66,10 +59,19 @@
 	anti_hug = hug_memory
 	icon_state = initial(icon_state)
 
+/obj/item/clothing/head/superior_welding/examine()
+	. = ..()
+	if(icon_state == "[initial(icon_state)]up")
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
+	if(icon_state == "[initial(icon_state)]")
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
+
+
 /obj/item/clothing/head/welding/toggle_item_state(mob/user)
 	. = ..()
 	up = !up
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
+	worn_icon_state = "[initial(worn_icon_state)][up ? "up" : ""]"
 	if(up)
 		flip_up()
 		if(user)
@@ -98,6 +100,13 @@
 	name = "\improper Superior welding helmet"
 	desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block 4 more huggers."
 
+	icon = 'icons/obj/clothing/headwear/hats.dmi'
+	worn_icon_list = list(
+		slot_l_hand_str = 'icons/mob/inhands/clothing/hats_left.dmi',
+		slot_r_hand_str = 'icons/mob/inhands/clothing/hats_right.dmi',
+		slot_head_str = 'icons/mob/clothing/headwear/head_0.dmi'
+	)
+
 	icon_state = "superior_welding"
 	worn_icon_state = "superior_welding"
 
@@ -106,27 +115,20 @@
 	armor_features_flags = ARMOR_NO_DECAP
 	max_integrity = 5
 
-	atom_flags = CONDUCT
+	atom_flags = CONDUCT //Completely useless and only kept in to not anger the machine gods
 	inventory_flags = COVEREYES|COVERMOUTH|BLOCKSHARPOBJ
 	inv_hide_flags = HIDEEARS|HIDEEYES|HIDEFACE
 	armor_protection_flags = HEAD|FACE|EYES
 	actions_types = list(/datum/action/item_action/toggle)
-	siemens_coefficient = 0.9 //The what now
+	siemens_coefficient = 0.9 //Also useless
 	w_class = WEIGHT_CLASS_NORMAL
 	anti_hug = 4
 	eye_protection = 2
-	var/hug_memory = 0 //Variable to hold the "memory" of how many anti-hugs remain.  Because people were abusing the fuck out of it.
+	var/hug_memory = 0
 
 /obj/item/clothing/head/superior_welding/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/clothing_tint, TINT_4)
-
-/obj/item/clothing/head/superior_welding/examine()
-	. = ..()
-	if(icon_state == "[initial(icon_state)]up")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
-	if(icon_state == "[initial(icon_state)]")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
 
 /obj/item/clothing/head/superior_welding/attack_self(mob/user)
 	toggle_item_state(user)
@@ -154,10 +156,19 @@
 	anti_hug = hug_memory
 	icon_state = initial(icon_state)
 
+/obj/item/clothing/head/superior_welding/examine()
+	. = ..()
+	if(icon_state == "[initial(icon_state)]up")
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
+	if(icon_state == "[initial(icon_state)]")
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
+
+
 /obj/item/clothing/head/superior_welding/toggle_item_state(mob/user)
 	. = ..()
 	up = !up
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
+	worn_icon_state = "[initial(worn_icon_state)][up ? "up" : ""]"
 	if(up)
 		flip_up()
 		if(user)
@@ -167,11 +178,11 @@
 		if(user)
 			user.balloon_alert(user, "flips down")
 
-	update_clothing_icon()	//so our mob-overlays update
+	update_clothing_icon()
 
 	update_action_button_icons()
 
-/obj/item/clothing/head/superior_welding/flipped //spawn in flipped up.
+/obj/item/clothing/head/superior_welding/flipped
 	up = TRUE
 
 /obj/item/clothing/head/superior_welding/flipped/Initialize(mapload)
