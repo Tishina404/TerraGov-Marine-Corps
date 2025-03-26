@@ -13,7 +13,7 @@
 */
 /obj/item/clothing/head/welding
 	name = "welding helmet"
-	desc = "A head-mounted face cover designed to protect the wearer completely from space-arc eye."
+	desc = "A head-mounted face cover designed to protect the wearer completely from space-arc eye. It looks like it can block 2 more huggers."
 	icon_state = "welding"
 	worn_icon_state = "welding"
 	var/up = FALSE
@@ -32,6 +32,13 @@
 /obj/item/clothing/head/welding/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/clothing_tint, TINT_5)
+
+/obj/item/clothing/head/superior_welding/examine()
+	. = ..()
+	if(icon_state == "[initial(icon_state)]up")
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. UPIt looks like it can block [hug_memory] more huggers."
+	if(icon_state == "[initial(icon_state)]")
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. DOWNIt looks like it can block [anti_hug] more huggers."
 
 /obj/item/clothing/head/welding/attack_self(mob/user)
 	toggle_item_state(user)
@@ -65,10 +72,12 @@
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
 	if(up)
 		flip_up()
+		if(user)
+			user.balloon_alert(user, "flips up")
 	else
 		flip_down()
-	if(user)
-		to_chat(usr, "You [up ? "push [src] up out of your face" : "flip [src] down to protect your eyes"].")
+		if(user)
+			user.balloon_alert(user, "flips down")
 
 	update_clothing_icon()	//so our mob-overlays update
 
@@ -87,20 +96,14 @@
 */
 /obj/item/clothing/head/superior_welding
 	name = "\improper Superior welding helmet"
-	desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor."
-
-	icon = 'icons/obj/clothing/headwear/marine_hats.dmi' //move sprites to hats and remove this part
-	worn_icon_list = list(
-		slot_head_str = 'icons/mob/clothing/headwear/marine_helmets.dmi',
-		slot_l_hand_str = 'icons/mob/inhands/items/items_left.dmi',
-		slot_r_hand_str = 'icons/mob/inhands/items/items_right.dmi',
-	) // till here
+	desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block 4 more huggers."
 
 	icon_state = "superior_welding"
 	worn_icon_state = "superior_welding"
 
 	var/up = FALSE
 	soft_armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50, FIRE = 50, ACID = 50)
+	armor_features_flags = ARMOR_NO_DECAP
 	max_integrity = 5
 
 	atom_flags = CONDUCT
@@ -110,13 +113,20 @@
 	actions_types = list(/datum/action/item_action/toggle)
 	siemens_coefficient = 0.9 //The what now
 	w_class = WEIGHT_CLASS_NORMAL
-	anti_hug = 2
+	anti_hug = 4
 	eye_protection = 2
 	var/hug_memory = 0 //Variable to hold the "memory" of how many anti-hugs remain.  Because people were abusing the fuck out of it.
 
 /obj/item/clothing/head/superior_welding/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/clothing_tint, TINT_4)
+
+/obj/item/clothing/head/superior_welding/examine()
+	. = ..()
+	if(icon_state == "[initial(icon_state)]up")
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. UPIt looks like it can block [hug_memory] more huggers."
+	if(icon_state == "[initial(icon_state)]")
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. DOWNIt looks like it can block [anti_hug] more huggers."
 
 /obj/item/clothing/head/superior_welding/attack_self(mob/user)
 	toggle_item_state(user)
@@ -150,10 +160,12 @@
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
 	if(up)
 		flip_up()
+		if(user)
+			user.balloon_alert(user, "flips up")
 	else
 		flip_down()
-	if(user)
-		to_chat(usr, "You [up ? "push [src] up out of your face" : "flip [src] down to protect your eyes"].") //maybe change when not worn to make more sense
+		if(user)
+			user.balloon_alert(user, "flips down")
 
 	update_clothing_icon()	//so our mob-overlays update
 
