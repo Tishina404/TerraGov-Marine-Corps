@@ -1,7 +1,7 @@
 /*
 * Contents:
-*		Welding mask
-*		Superior welding mask
+*		Welding helmet
+*		Superior welding helmet
 *		Cakehat
 *		Ushanka
 *		Pumpkin head
@@ -9,7 +9,7 @@
 */
 
 /*
-* Welding mask
+* Welding helmet
 */
 /obj/item/clothing/head/welding
 	name = "welding helmet"
@@ -38,7 +38,7 @@
 
 /obj/item/clothing/head/welding/verb/verbtoggle()
 	set category = "IC.Object"
-	set name = "Adjust welding mask"
+	set name = "Adjust welding helmet"
 	set src in usr
 
 	if(!usr.incapacitated())
@@ -59,18 +59,10 @@
 	anti_hug = hug_memory
 	icon_state = initial(icon_state)
 
-/obj/item/clothing/head/superior_welding/examine()
-	. = ..()
-	if(icon_state == "[initial(icon_state)]up")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
-	if(icon_state == "[initial(icon_state)]")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
-
-
 /obj/item/clothing/head/welding/toggle_item_state(mob/user)
 	. = ..()
 	up = !up
-	icon_state = "[initial(icon_state)][up ? "up" : ""]"
+	icon_state = "[initial(icon_state)][up ? "up" : ""]" //"up" version of helmet has to have "up" appended to the regular icon state name for this to work
 	worn_icon_state = "[initial(worn_icon_state)][up ? "up" : ""]"
 	if(up)
 		flip_up()
@@ -81,6 +73,9 @@
 		if(user)
 			user.balloon_alert(user, "flips down")
 
+	user.update_inv_l_hand() //update inhand sprites whenever toggled
+	user.update_inv_r_hand()
+
 	update_clothing_icon()	//so our mob-overlays update
 
 	update_action_button_icons()
@@ -88,13 +83,20 @@
 /obj/item/clothing/head/welding/flipped //spawn in flipped up.
 	up = TRUE
 
+/obj/item/clothing/head/welding/examine()
+	. = ..()
+	if(up) // use hug_memory because anti_hug is set to 0 when up
+		desc = "A head-mounted face cover designed to protect the wearer completely from space-arc eye. It looks like it can block [hug_memory] more huggers."
+	else
+		desc = "A head-mounted face cover designed to protect the wearer completely from space-arc eye. It looks like it can block [anti_hug] more huggers."
+
 /obj/item/clothing/head/welding/flipped/Initialize(mapload)
 	. = ..()
 	flip_up()
 	AddComponent(/datum/component/clothing_tint, TINT_5, FALSE)
 
 /*
-* Superior welding mask
+* Superior welding helmet
 */
 /obj/item/clothing/head/superior_welding
 	name = "\improper Superior welding helmet"
@@ -111,7 +113,7 @@
 	worn_icon_state = "superior_welding"
 
 	var/up = FALSE
-	soft_armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50, FIRE = 50, ACID = 50)
+	soft_armor = list(MELEE = 50, BULLET = 70, LASER = 70, ENERGY = 80, BOMB = 55, BIO = 55, FIRE = 55, ACID = 60)
 	armor_features_flags = ARMOR_NO_DECAP
 	max_integrity = 5
 
@@ -135,7 +137,7 @@
 
 /obj/item/clothing/head/superior_welding/verb/verbtoggle()
 	set category = "IC.Object"
-	set name = "Adjust superior welding mask"
+	set name = "Adjust superior welding helmet"
 	set src in usr
 
 	if(!usr.incapacitated())
@@ -156,18 +158,10 @@
 	anti_hug = hug_memory
 	icon_state = initial(icon_state)
 
-/obj/item/clothing/head/superior_welding/examine()
-	. = ..()
-	if(icon_state == "[initial(icon_state)]up")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
-	if(icon_state == "[initial(icon_state)]")
-		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
-
-
 /obj/item/clothing/head/superior_welding/toggle_item_state(mob/user)
 	. = ..()
 	up = !up
-	icon_state = "[initial(icon_state)][up ? "up" : ""]"
+	icon_state = "[initial(icon_state)][up ? "up" : ""]" //"up" version of helmet has to have "up" appended to the regular icon state name for this to work
 	worn_icon_state = "[initial(worn_icon_state)][up ? "up" : ""]"
 	if(up)
 		flip_up()
@@ -178,12 +172,22 @@
 		if(user)
 			user.balloon_alert(user, "flips down")
 
+	user.update_inv_l_hand() //update inhand sprites whenever toggled
+	user.update_inv_r_hand()
+
 	update_clothing_icon()
 
 	update_action_button_icons()
 
 /obj/item/clothing/head/superior_welding/flipped
 	up = TRUE
+
+/obj/item/clothing/head/superior_welding/examine()
+	. = ..()
+	if(up) // use hug_memory because anti_hug is set to 0 when up
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [hug_memory] more huggers."
+	else
+		desc = "A welding helmet made from more expensive and robust materials, providing both armor and a superior welding visor. It looks like it can block [anti_hug] more huggers."
 
 /obj/item/clothing/head/superior_welding/flipped/Initialize(mapload)
 	. = ..()
